@@ -1,0 +1,22 @@
+# import ID, Picture from "../schemas/database.graphql"
+
+
+type Query {
+  picture(id: ID!): Picture
+  allPictures: [Picture!]!
+}
+
+type Mutation {
+  renamePicture(
+    id: ID!
+    name: String!
+  ): Picture
+
+  deletePicture(
+    id: ID!
+  ): DeletePicturePayload!
+}
+
+type DeletePicturePayload {
+  success: Boolean!
+}

@@ -1,0 +1,10 @@
+type Picture @model {
+  id: ID! @isUnique
+  name: String!
+  size: Int!
+  secret: String!
+  contentType: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String! @isUnique
+}

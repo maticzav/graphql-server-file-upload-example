@@ -1,0 +1,32 @@
+# source: http://localhost:5000
+# timestamp: Fri Dec 08 2017 19:57:34 GMT+0100 (CET)
+
+scalar DateTime
+
+type DeletePicturePayload {
+  success: Boolean!
+}
+
+type Mutation {
+  renamePicture(id: ID!, name: String!): Picture
+  deletePicture(id: ID!): DeletePicturePayload!
+}
+
+interface Node {
+  id: ID!
+}
+
+type Picture implements Node {
+  contentType: String!
+  createdAt: DateTime!
+  id: ID!
+  name: String!
+  size: Int!
+  updatedAt: DateTime!
+  url: String!
+}
+
+type Query {
+  file(id: ID!): Picture
+  allPictures: [Picture!]!
+}
