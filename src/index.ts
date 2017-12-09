@@ -2,7 +2,7 @@ import { Graphcool } from "graphcool-binding"
 import { importSchema } from "graphql-import"
 import { GraphQLServer } from "graphql-yoga"
 import { S3 } from 'aws-sdk'
-import { v5 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid'
 import { resolvers } from "./resolvers"
 
 const multiparty = require('multiparty')
