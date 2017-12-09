@@ -6,7 +6,7 @@ export const resolvers = {
     allPictures: async (parent, args, context, info) => {
       return context.db.query.allPictures(args, info)
     },
-    file: async (parent, {id}, context, info) => {
+    picture: async (parent, {id}, context, info) => {
       return context.db.query.Picture({id}, info)
     },
   },

@@ -1,5 +1,5 @@
 # source: https://api.graph.cool/simple/v1/cjawyf9q7031n01421atgzsn1
-# timestamp: Fri Dec 08 2017 19:57:33 GMT+0100 (CET)
+# timestamp: Sat Dec 09 2017 10:25:48 GMT+0100 (CET)
 
 enum _ModelMutationType {
   CREATED
@@ -15,6 +15,7 @@ type _QueryMeta {
 input CreatePicture {
   contentType: String!
   name: String!
+  secret: String!
   size: Int!
   url: String!
 }
@@ -22,8 +23,8 @@ input CreatePicture {
 scalar DateTime
 
 type Mutation {
-  createPicture(contentType: String!, name: String!, size: Int!, url: String!): Picture
-  updatePicture(contentType: String, id: ID!, name: String, size: Int, url: String): Picture
+  createPicture(contentType: String!, name: String!, secret: String!, size: Int!, url: String!): Picture
+  updatePicture(contentType: String, id: ID!, name: String, secret: String, size: Int, url: String): Picture
   updateOrCreatePicture(update: UpdatePicture!, create: CreatePicture!): Picture
   deletePicture(id: ID!): Picture
 }
@@ -39,6 +40,7 @@ type Picture implements Node {
   createdAt: DateTime!
   id: ID!
   name: String!
+  secret: String!
   size: Int!
   updatedAt: DateTime!
   url: String!
@@ -192,6 +194,46 @@ input PictureFilter {
 
   # All values not ending with the given string.
   name_not_ends_with: String
+  secret: String
+
+  # All values that are not equal to given value.
+  secret_not: String
+
+  # All values that are contained in given list.
+  secret_in: [String!]
+
+  # All values that are not contained in given list.
+  secret_not_in: [String!]
+
+  # All values less than the given value.
+  secret_lt: String
+
+  # All values less than or equal the given value.
+  secret_lte: String
+
+  # All values greater than the given value.
+  secret_gt: String
+
+  # All values greater than or equal the given value.
+  secret_gte: String
+
+  # All values containing the given string.
+  secret_contains: String
+
+  # All values not containing the given string.
+  secret_not_contains: String
+
+  # All values starting with the given string.
+  secret_starts_with: String
+
+  # All values not starting with the given string.
+  secret_not_starts_with: String
+
+  # All values ending with the given string.
+  secret_ends_with: String
+
+  # All values not ending with the given string.
+  secret_not_ends_with: String
   size: Int
 
   # All values that are not equal to given value.
@@ -287,6 +329,8 @@ enum PictureOrderBy {
   id_DESC
   name_ASC
   name_DESC
+  secret_ASC
+  secret_DESC
   size_ASC
   size_DESC
   updatedAt_ASC
@@ -300,6 +344,7 @@ type PicturePreviousValues {
   createdAt: DateTime!
   id: ID!
   name: String!
+  secret: String!
   size: Int!
   updatedAt: DateTime!
   url: String!
@@ -469,6 +514,46 @@ input PictureSubscriptionFilterNode {
 
   # All values not ending with the given string.
   name_not_ends_with: String
+  secret: String
+
+  # All values that are not equal to given value.
+  secret_not: String
+
+  # All values that are contained in given list.
+  secret_in: [String!]
+
+  # All values that are not contained in given list.
+  secret_not_in: [String!]
+
+  # All values less than the given value.
+  secret_lt: String
+
+  # All values less than or equal the given value.
+  secret_lte: String
+
+  # All values greater than the given value.
+  secret_gt: String
+
+  # All values greater than or equal the given value.
+  secret_gte: String
+
+  # All values containing the given string.
+  secret_contains: String
+
+  # All values not containing the given string.
+  secret_not_contains: String
+
+  # All values starting with the given string.
+  secret_starts_with: String
+
+  # All values not starting with the given string.
+  secret_not_starts_with: String
+
+  # All values ending with the given string.
+  secret_ends_with: String
+
+  # All values not ending with the given string.
+  secret_not_ends_with: String
   size: Int
 
   # All values that are not equal to given value.
@@ -565,7 +650,7 @@ type PictureSubscriptionPayload {
 type Query {
   allPictures(filter: PictureFilter, orderBy: PictureOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): [Picture!]!
   _allPicturesMeta(filter: PictureFilter, orderBy: PictureOrderBy, skip: Int, after: String, before: String, first: Int, last: Int): _QueryMeta!
-  Picture(id: ID, url: String): Picture
+  Picture(id: ID, secret: String, url: String): Picture
 
   # Fetches an object given its ID
   node(
@@ -582,6 +667,7 @@ input UpdatePicture {
   contentType: String
   id: ID!
   name: String
+  secret: String
   size: Int
   url: String
 }

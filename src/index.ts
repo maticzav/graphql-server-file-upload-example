@@ -42,32 +42,40 @@ server.express.post('/upload', (req, res, next) => {
     let form = new multiparty.Form()
 
     form.on('part', async function(part) {
+      if (part.name !== 'data') {
+        return
+      }
+
       const name = part.filename
       const secret = uuid()
       const size = part.byteCount
       const contentType = part.headers['content-type']
 
-      const res = await s3.upload({
+      const response = await s3.upload({
         Bucket: process.env.S3_BUCKET,
         Key: secret,
         ACL: 'public-read',
         Body: part,
-        ContentLength: part.byteCount,
+        ContentLength: size,
+        ContentType: contentType
       }).promise()
 
-      const url = res.Location
+      const url = response.Location
 
-      const file: { id: string } = await graphcool.mutation.createPicture({name, size, contentType, url, secret}, `{ id }`)
+      const { id }: { id: string } = await graphcool.mutation.createPicture({name, size, contentType, url, secret}, `{ id }`)
 
-      part.resume()
+      return res.json({
+        id,
+        name,
+        secret,
+        contentType,
+        size,
+        url
+      })
     })
 
     form.on('error', () => {
       Promise.reject('Something went wrong.')
-    })
-
-    form.on('close', () => {
-      return res.sendStatus(200)
     })
 
     form.parse(req)

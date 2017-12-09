@@ -2,7 +2,7 @@ type Picture @model {
   id: ID! @isUnique
   name: String!
   size: Int!
-  secret: String!
+  secret: String! @isUnique
   contentType: String!
   createdAt: DateTime!
   updatedAt: DateTime!
