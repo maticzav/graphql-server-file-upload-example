@@ -3,5 +3,6 @@ dist
 
 .env.prod
 .envrc
+.graphcoolrc
 
 *.log*
