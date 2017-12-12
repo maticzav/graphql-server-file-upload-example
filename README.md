@@ -1,6 +1,6 @@
 # GraphQL Server File Upload Example
 
-This example illustrates the implementation of File API with GraphQL Gateway pattern.
+This example illustrates the implementation of File API with GraphQL Gateway pattern. The best example for GraphQL Gateway basic usage can be found here: https://github.com/graphcool/graphql-server-example . 
 
 ## Getting Started
 
@@ -60,7 +60,6 @@ This updates the local file `example.png`. The response could look something lik
 ### Directories
 
 * `database`: GraphQL database service definitions (using Graphcool)
-* `schemas`: Generated GraphQL schemas of the database service & gateway
 * `src`: Source code of the gateway
 
 ### Files

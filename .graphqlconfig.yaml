@@ -1,6 +1,6 @@
 projects:
-  server:
-    schemaPath: "schemas/server.graphql"
+  app:
+    schemaPath: "schemas/app.graphql"
     extensions:
       endpoints:
         default: "${env:SERVER_ENDPOINT}"
