@@ -12,10 +12,10 @@ graphcool root-token apikey # put the root token into the `GRAPHCOOL_APIKEY` env
 ```
 
 ### Setting up the S3 bucket
-1. Head over to the [http://console.aws.amazon.com/](AWS console) and navigate to the `S3` section.
+1. Head over to the [AWS console](http://console.aws.amazon.com/) and navigate to the `S3` section.
 2. Click create bucket and follow the instructions on screen.
 3. Once you have created a `bucket`, add bucket name that you've picked to .env `S3_BUCKET` property.
-4. Head back to the AWS and open `Identity and Access Management (IAM)` [https://console.aws.amazon.com/iam](console). Navigate to `Users` and click `Add user`.
+4. Head back to the AWS and open `Identity and Access Management (IAM)` [console](https://console.aws.amazon.com/iam). Navigate to `Users` and click `Add user`.
 5. Under `access type` check `Programmatic access` and press `Next`. From options, select `Attach existing policies directly` and a table below will open. Search for `AmazonS3FullAccess` and check it. Press `Next` to review everything and submit by pressing `Create user`.
 6. Once done, copy the `Access key ID` to .env `S3_KEY` property and `Secret access key` to .env `S3_SECRET` property.
 7. You are all set to start the server!
