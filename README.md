@@ -1,6 +1,6 @@
 # GraphQL Server File Upload Example
 
-This example illustrates the implementation of File API with GraphQL Gateway pattern. The best example for GraphQL Gateway basic usage can be found here: https://github.com/graphcool/graphql-server-example . 
+This example illustrates the implementation of File API with GraphQL Gateway pattern. The best example for GraphQL Gateway basic usage can be found here: https://github.com/graphcool/graphql-server-example .
 
 ## Getting Started
 
@@ -10,6 +10,15 @@ cd database
 graphcool deploy # copy simple API endpoint into the `GRAPHCOOL_ENPOINT` env var in .env
 graphcool root-token apikey # put the root token into the `GRAPHCOOL_APIKEY` env var in .env
 ```
+
+### Setting up the S3 bucket
+1. Head over to the [http://console.aws.amazon.com/](AWS console) and navigate to the `S3` section.
+2. Click create bucket and follow the instructions on screen.
+3. Once you have created a `bucket`, add bucket name that you've picked to .env `S3_BUCKET` property.
+4. Head back to the AWS and open `Identity and Access Management (IAM)` [https://console.aws.amazon.com/iam](console). Navigate to `Users` and click `Add user`.
+5. Under `access type` check `Programmatic access` and press `Next`. From options, select `Attach existing policies directly` and a table below will open. Search for `AmazonS3FullAccess` and check it. Press `Next` to review everything and submit by pressing `Create user`.
+6. Once done, copy the `Access key ID` to .env `S3_KEY` property and `Secret access key` to .env `S3_SECRET` property.
+7. You are all set to start the server!
 
 ### Starting the Server
 

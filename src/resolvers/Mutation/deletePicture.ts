@@ -1,5 +1,11 @@
 import { Context } from '../../utils'
 
-export const deletePicture = (parent, {id}, context: Context, info) => {
-  return context.db.mutation.deletePicture({id}, info)
+export const deletePicture = async (parent, {id}, context: Context, info) => {
+  try {
+    const res = await context.db.mutation.deletePicture({ id })
+    return { success: true }
+  } catch(err) {
+    console.log(err)
+    return { success: false }
+  }
 }
