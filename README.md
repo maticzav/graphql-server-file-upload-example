@@ -6,10 +6,11 @@ This example illustrates the implementation of File API with GraphQL Gateway pat
 
 ### Initializing the Graphcool Database Service
 ```sh
-cd database
-graphcool deploy # copy simple API endpoint into the `GRAPHCOOL_ENPOINT` env var in .env
-graphcool root-token apikey # put the root token into the `GRAPHCOOL_APIKEY` env var in .env
+graphcool deploy # copy API endpoint into the `GRAPHCOOL_ENPOINT` env var in .env
+graphcool root-token apikey # put the root token into the `GRAPHCOOL_SECRET` env var in .env
 ```
+
+To get `GRAPHCOOL_SECRET` visit http://jwtbuilder.jamiekurtz.com and scroll to the bottom where you can hash your secret from `graphcool.yml` and get the hashed output. (_sssh_ is used in the example.)
 
 ### Setting up the S3 bucket
 1. Head over to the [AWS console](http://console.aws.amazon.com/) and navigate to the `S3` section.

@@ -23,7 +23,7 @@ const server = new GraphQLServer({
     db: new Graphcool({
       schemaPath: DATABASE_SCHEMA_PATH,
       endpoint: process.env.GRAPHCOOL_ENDPOINT,
-      secret: process.env.GRAPHCOOL_APIKEY,
+      secret: process.env.GRAPHCOOL_SECRET,
     }),
   }),
   options: { port: 5000 },

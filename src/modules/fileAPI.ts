@@ -30,12 +30,12 @@ export default ({graphcool, s3}) => (req, res, next) => {
       const data = {
         name,
         size,
+        secret,
         contentType,
-        url,
-        secret
+        url
       }
 
-      const { id }: { id: string } = await graphcool.mutation.createFile({ data }, `{ id }`)
+      const { id }: { id: string } = await graphcool.mutation.createFile({ data }, ` { id } `)
 
       return res.json({
         id,
@@ -47,7 +47,8 @@ export default ({graphcool, s3}) => (req, res, next) => {
       })
     })
 
-    form.on('error', () => {
+    form.on('error', err => {
+      console.log(err)
       Promise.reject('Something went wrong.')
     })
 
