@@ -27,7 +27,15 @@ export default ({graphcool, s3}) => (req, res, next) => {
 
       const url = response.Location
 
-      const { id }: { id: string } = await graphcool.mutation.createPicture({name, size, contentType, url, secret}, `{ id }`)
+      const data = {
+        name,
+        size,
+        contentType,
+        url,
+        secret
+      }
+
+      const { id }: { id: string } = await graphcool.mutation.createFile({ data }, `{ id }`)
 
       return res.json({
         id,

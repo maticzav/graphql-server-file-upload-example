@@ -7,8 +7,8 @@ import fileAPI from './modules/fileAPI'
 
 // Config --------------------------------------------------------------------
 
-const APP_SCHEMA_PATH = './src/schemas/app.graphql'
-const DATABASE_SCHEMA_PATH = './src/schemas/database.graphql'
+const APP_SCHEMA_PATH = './src/schema.graphql'
+const DATABASE_SCHEMA_PATH = './database/schema.graphql'
 
 const typeDefs = importSchema(APP_SCHEMA_PATH)
 
@@ -35,7 +35,7 @@ server.express.post('/upload', fileAPI({
   graphcool: new Graphcool({
     schemaPath: DATABASE_SCHEMA_PATH,
     endpoint: process.env.GRAPHCOOL_ENDPOINT,
-    secret: process.env.GRAPHCOOL_APIKEY,
+    secret: process.env.GRAPHCOOL_SECRET,
   }),
   s3: new S3({
     accessKeyId: process.env.S3_KEY,
