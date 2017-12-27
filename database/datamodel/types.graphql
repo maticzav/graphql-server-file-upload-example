@@ -1,10 +1,10 @@
-type Picture @model {
-  id: ID! @isUnique
+type File {
+  id: ID! @unique
   name: String!
   size: Int!
-  secret: String! @isUnique
+  secret: String! @unique
   contentType: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  url: String! @isUnique
+  url: String! @unique
 }

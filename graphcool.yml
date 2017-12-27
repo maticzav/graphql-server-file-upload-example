@@ -1,0 +1,13 @@
+service: graphql-server-file-upload-example
+
+stages:
+  default: dev
+  dev: local
+
+datamodel:
+  - database/datamodel/types.graphql
+  - database/datamodel/enums.graphql
+
+schema: database/schema.graphql
+
+secret: sssh
