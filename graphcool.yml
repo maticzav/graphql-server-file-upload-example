@@ -6,7 +6,6 @@ stages:
 
 datamodel:
   - database/datamodel/types.graphql
-  - database/datamodel/enums.graphql
 
 schema: database/schema.graphql
 
