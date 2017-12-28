@@ -1,6 +1,6 @@
 # GraphQL Server File Upload Example
 
-This example illustrates the implementation of File API with GraphQL Gateway pattern. The best example for GraphQL Gateway basic usage can be found here: https://github.com/graphcool/graphql-server-example .
+This example illustrates the implementation of File API with GraphQL Server pattern. The best example for GraphQL Server basic usage can be found here: https://github.com/graphcool/graphql-server-example .
 
 ## Getting Started
 
@@ -64,19 +64,6 @@ This uploads the local file `example.png`. The response could look something lik
   "url": "https://__S3_BUCKET__.s3-eu-west-1.amazonaws.com/43de4b08-78b2-4b5c-a5b7-05ee350ee09a"
 }
 ```
-
-## Project structure
-
-### Directories
-
-* `database`: GraphQL database service definitions (using Graphcool)
-* `src`: Source code of the gateway
-
-### Files
-
-* `.env`: Contains env vars (such as `GRAPHCOOL_ENDPOINT` and `GRAPHCOOL_APIKEY`)
-* `.graphqlconfig.yml`: [GraphQL config](https://github.com/graphcool/graphql-config) file used for IDE support and [`graphql-cli`](https://github.com/graphcool/graphql-cli)
-* `tsconfig.json`: Typescript compiler settings
 
 ## License
 MIT
