@@ -1,7 +1,7 @@
 import { v4 as uuid } from 'uuid'
 
-const mime = require('mime-types')
-const multiparty = require('multiparty')
+import * as mime from 'mime-types'
+import * as  multiparty from 'multiparty'
 
 export default ({graphcool, s3}) => (req, res) => {
   try {
