@@ -3,20 +3,23 @@ import { v4 as uuid } from 'uuid'
 const mime = require('mime-types')
 const multiparty = require('multiparty')
 
-export default ({graphcool, s3}) => (req, res, next) => {
+export default ({graphcool, s3}) => (req, res) => {
   try {
     let form = new multiparty.Form()
+    let count = 0
+    let files = []
+    let finished = false
+
 
     form.on('part', async function(part) {
-      if (part.name !== 'data') {
-        return
-      }
+      count ++
 
-      const name = part.filename
+      const name = part.name || part.filename
       const secret = uuid()
       const size = part.byteCount
-      const contentType = mime.lookup(name)
+      const contentType = mime.lookup(part.filename)
 
+      // Upload to S3
       const response = await s3.upload({
         Key: secret,
         ACL: 'public-read',
@@ -27,6 +30,7 @@ export default ({graphcool, s3}) => (req, res, next) => {
 
       const url = response.Location
 
+      // Sync with Graphcool
       const data = {
         name,
         size,
@@ -37,24 +41,35 @@ export default ({graphcool, s3}) => (req, res, next) => {
 
       const { id }: { id: string } = await graphcool.mutation.createFile({ data }, ` { id } `)
 
-      return res.json({
+      // Wait for all files to be uploaded
+      const file = {
         id,
         name,
         secret,
         contentType,
         size,
         url
-      })
+      }
+
+      files.push(file)
+
+      if (finished && count === files.length) {
+        res.json(files)
+      }
+    })
+
+    form.on('close', () => {
+      finished = true
     })
 
     form.on('error', err => {
-      console.log(err)
-      Promise.reject('Something went wrong.')
+      throw err
     })
 
     form.parse(req)
 
-  } catch (err) {
-    throw err
+  } catch(err) {
+    console.log(err)
+    res.sendStatus(500)
   }
 }

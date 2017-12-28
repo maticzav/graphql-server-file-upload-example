@@ -48,22 +48,24 @@ Everytime you upload a file to Graphcool, a new `File` node is created that cont
 
 If you want to connect the `File` node to another node in a relation, you can use the `id` in the response.
 
-With`curl` you could execute:
+With `curl` you could execute:
 
-`curl -X POST 'http://localhost:5000/upload' -F "data=@example.png"`
+`curl -X POST 'http://localhost:5000/upload' -F "filename=@example.png"`
 
-This uploads the local file `example.png`. The response could look something like this:
+This uploads the local file `example.png` under `filename` name. The response could look something like this:
 
 ```JSON
-{
+[{
   "id": "cjbqvp4ii00390181b1q0dq6h",
-  "name": "example.png",
+  "name": "filename",
   "secret": "43de4b08-78b2-4b5c-a5b7-05ee350ee09a",
   "contentType": "image/png",
   "size": 36625,
   "url": "https://__S3_BUCKET__.s3-eu-west-1.amazonaws.com/43de4b08-78b2-4b5c-a5b7-05ee350ee09a"
-}
+}]
 ```
+
+> If there's no filename provided, the name of the file is used instead.
 
 ## License
 MIT
