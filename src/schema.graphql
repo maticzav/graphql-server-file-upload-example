@@ -1,4 +1,4 @@
-# import ID, File from "../database/schema.graphql"
+# import ID, File from "./generated/database.graphql"
 
 type Query {
   file(id: ID!): File

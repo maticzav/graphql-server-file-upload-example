@@ -7,6 +7,5 @@ stages:
 datamodel:
   - database/datamodel/types.graphql
 
-schema: database/schema.graphql
-
+schema: src/generated/database.graphql
 secret: sssh

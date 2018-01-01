@@ -5,6 +5,9 @@ projects:
       endpoints:
         default: "${env:SERVER_ENDPOINT}"
   database:
-    schemaPath: "database/schema.graphql"
+    schemaPath: "src/generated/database.graphql"
     extensions:
       graphcool: graphcool.yml
+      binding:
+        output: src/generated/graphcool.ts
+        generator: graphcool-ts

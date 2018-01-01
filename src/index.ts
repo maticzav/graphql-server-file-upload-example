@@ -1,4 +1,4 @@
-import { Graphcool } from "graphcool-binding"
+import { Graphcool } from "./generated/graphcool"
 import { importSchema } from "graphql-import"
 import { GraphQLServer } from "graphql-yoga"
 import { S3 } from 'aws-sdk'
@@ -8,7 +8,6 @@ import fileApi from './modules/fileApi'
 // Config --------------------------------------------------------------------
 
 const APP_SCHEMA_PATH = './src/schema.graphql'
-const DATABASE_SCHEMA_PATH = './database/schema.graphql'
 
 const typeDefs = importSchema(APP_SCHEMA_PATH)
 
@@ -29,7 +28,6 @@ const server = new GraphQLServer({
   context: req => ({
     ...req,
     db: new Graphcool({
-      schemaPath: DATABASE_SCHEMA_PATH,
       endpoint: process.env.GRAPHCOOL_ENDPOINT,
       secret: process.env.GRAPHCOOL_SECRET,
     }),
@@ -42,7 +40,6 @@ const server = new GraphQLServer({
 server.express.post('/upload', fileApi({
   s3: s3client,
   graphcool: new Graphcool({
-    schemaPath: DATABASE_SCHEMA_PATH,
     endpoint: process.env.GRAPHCOOL_ENDPOINT,
     secret: process.env.GRAPHCOOL_SECRET,
   }),
