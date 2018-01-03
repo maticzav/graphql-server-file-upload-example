@@ -44,20 +44,20 @@ Everytime you upload a file to Graphcool, a new `File` node is created that cont
 * `name`: the file name
 * `size`: the file size
 * `url`: the url of the file where it can be accessed. The url contains of the project id and the file `secret`, so is unguessable as well.
-* `contentType`: the contentType of the file. It is determined based on the file name.
+* `contentType`: the contentType of the file. It is determined based on the file name (extension in the name is required!).
 
 If you want to connect the `File` node to another node in a relation, you can use the `id` in the response.
 
 With `curl` you could execute:
 
-`curl -X POST 'http://localhost:5000/upload' -F "filename=@example.png"`
+`curl -X POST 'http://localhost:5000/upload' -F "data=@example.png; filename=coolimage.png"`
 
-This uploads the local file `example.png` under `filename` name. The response could look something like this:
+This uploads the local file `example.png` under `coolimage.png` name. The response could look something like this:
 
 ```JSON
 [{
   "id": "cjbqvp4ii00390181b1q0dq6h",
-  "name": "filename",
+  "name": "coolimage.png",
   "secret": "43de4b08-78b2-4b5c-a5b7-05ee350ee09a",
   "contentType": "image/png",
   "size": 36625,
@@ -65,7 +65,7 @@ This uploads the local file `example.png` under `filename` name. The response co
 }]
 ```
 
-> If there's no filename provided, the name of the file is used instead.
+> If there's no filename provided, the original name of the file is used instead.
 
 ## License
 MIT

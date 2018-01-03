@@ -4,21 +4,19 @@ import * as mime from 'mime-types'
 import * as  multiparty from 'multiparty'
 
 export default ({graphcool, s3}) => (req, res) => {
-  try {
-    let form = new multiparty.Form()
-    let count = 0
-    let files = []
-    let finished = false
+  let form = new multiparty.Form()
 
+  form.on('part', async function(part) {
+    if (part.name !== 'data') {
+      return
+    }
 
-    form.on('part', async function(part) {
-      count ++
+    const name = part.filename
+    const secret = uuid()
+    const size = part.byteCount
+    const contentType = mime.lookup(part.filename)
 
-      const name = part.name || part.filename
-      const secret = uuid()
-      const size = part.byteCount
-      const contentType = mime.lookup(part.filename)
-
+    try {
       // Upload to S3
       const response = await s3.upload({
         Key: secret,
@@ -51,25 +49,18 @@ export default ({graphcool, s3}) => (req, res) => {
         url
       }
 
-      files.push(file)
+      return res.status(200).send(file)
 
-      if (finished && count === files.length) {
-        res.json(files)
-      }
-    })
+    } catch (err) {
+      console.log(err)
+      return res.sendStatus(500)
+    }
+  })
 
-    form.on('close', () => {
-      finished = true
-    })
+  form.on('error', err => {
+    console.log(err);
+    return res.sendStatus(500)
+  })
 
-    form.on('error', err => {
-      throw err
-    })
-
-    form.parse(req)
-
-  } catch(err) {
-    console.log(err)
-    res.sendStatus(500)
-  }
+  form.parse(req)
 }
