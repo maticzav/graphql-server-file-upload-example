@@ -39,7 +39,6 @@ export default ({graphcool, s3}) => (req, res) => {
 
       const { id }: { id: string } = await graphcool.mutation.createFile({ data }, ` { id } `)
 
-      // Wait for all files to be uploaded
       const file = {
         id,
         name,
