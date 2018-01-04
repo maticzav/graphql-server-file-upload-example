@@ -1,11 +1,10 @@
 service: graphql-server-file-upload-example
 
-stages:
-  default: dev
-  dev: local
+stage: dev
+cluster: local
 
 datamodel:
   - database/datamodel/types.graphql
 
 schema: src/generated/database.graphql
-secret: sssh
+secret: ${env:GRAPHCOOL_SECRET}

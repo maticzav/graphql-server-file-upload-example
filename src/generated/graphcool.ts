@@ -33,7 +33,7 @@ scalar DateTime
 
 type FileConnection {
   pageInfo: PageInfo!
-  edges: [FileEdge!]
+  edges: [FileEdge]!
 }
 
 input FileCreateInput {
@@ -66,6 +66,34 @@ enum FileOrderByInput {
   updatedAt_DESC
   url_ASC
   url_DESC
+}
+
+type FilePreviousValues {
+  id: ID!
+  name: String!
+  size: Int!
+  secret: String!
+  contentType: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String!
+}
+
+type FileSubscriptionPayload {
+  mutation: MutationType!
+  node: File
+  updatedFields: [String!]
+  previousValues: FilePreviousValues
+}
+
+input FileSubscriptionWhereInput {
+  AND: [FileSubscriptionWhereInput!]
+  OR: [FileSubscriptionWhereInput!]
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FileWhereInput
 }
 
 input FileUpdateInput {
@@ -193,6 +221,12 @@ type Mutation {
   resetData: Boolean
 }
 
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
 interface Node {
   id: ID!
 }
@@ -209,6 +243,10 @@ type Query {
   file(where: FileWhereUniqueInput!): File
   filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
   node(id: ID!): Node
+}
+
+type Subscription {
+  file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
 }
 `
 
@@ -230,109 +268,15 @@ export type FileOrderByInput =
   'url_ASC' |
   'url_DESC'
 
+export type MutationType = 
+  'CREATED' |
+  'UPDATED' |
+  'DELETED'
+
 export interface FileWhereUniqueInput {
   id?: ID_Input
   secret?: String
   url?: String
-}
-
-export interface FileWhereInput {
-  AND?: Array<FileWhereInput> | FileWhereInput
-  OR?: Array<FileWhereInput> | FileWhereInput
-  id?: ID_Input
-  id_not?: ID_Input
-  id_in?: Array<ID_Input> | ID_Input
-  id_not_in?: Array<ID_Input> | ID_Input
-  id_lt?: ID_Input
-  id_lte?: ID_Input
-  id_gt?: ID_Input
-  id_gte?: ID_Input
-  id_contains?: ID_Input
-  id_not_contains?: ID_Input
-  id_starts_with?: ID_Input
-  id_not_starts_with?: ID_Input
-  id_ends_with?: ID_Input
-  id_not_ends_with?: ID_Input
-  name?: String
-  name_not?: String
-  name_in?: Array<String> | String
-  name_not_in?: Array<String> | String
-  name_lt?: String
-  name_lte?: String
-  name_gt?: String
-  name_gte?: String
-  name_contains?: String
-  name_not_contains?: String
-  name_starts_with?: String
-  name_not_starts_with?: String
-  name_ends_with?: String
-  name_not_ends_with?: String
-  size?: Int
-  size_not?: Int
-  size_in?: Array<Int> | Int
-  size_not_in?: Array<Int> | Int
-  size_lt?: Int
-  size_lte?: Int
-  size_gt?: Int
-  size_gte?: Int
-  secret?: String
-  secret_not?: String
-  secret_in?: Array<String> | String
-  secret_not_in?: Array<String> | String
-  secret_lt?: String
-  secret_lte?: String
-  secret_gt?: String
-  secret_gte?: String
-  secret_contains?: String
-  secret_not_contains?: String
-  secret_starts_with?: String
-  secret_not_starts_with?: String
-  secret_ends_with?: String
-  secret_not_ends_with?: String
-  contentType?: String
-  contentType_not?: String
-  contentType_in?: Array<String> | String
-  contentType_not_in?: Array<String> | String
-  contentType_lt?: String
-  contentType_lte?: String
-  contentType_gt?: String
-  contentType_gte?: String
-  contentType_contains?: String
-  contentType_not_contains?: String
-  contentType_starts_with?: String
-  contentType_not_starts_with?: String
-  contentType_ends_with?: String
-  contentType_not_ends_with?: String
-  createdAt?: DateTime
-  createdAt_not?: DateTime
-  createdAt_in?: Array<DateTime> | DateTime
-  createdAt_not_in?: Array<DateTime> | DateTime
-  createdAt_lt?: DateTime
-  createdAt_lte?: DateTime
-  createdAt_gt?: DateTime
-  createdAt_gte?: DateTime
-  updatedAt?: DateTime
-  updatedAt_not?: DateTime
-  updatedAt_in?: Array<DateTime> | DateTime
-  updatedAt_not_in?: Array<DateTime> | DateTime
-  updatedAt_lt?: DateTime
-  updatedAt_lte?: DateTime
-  updatedAt_gt?: DateTime
-  updatedAt_gte?: DateTime
-  url?: String
-  url_not?: String
-  url_in?: Array<String> | String
-  url_not_in?: Array<String> | String
-  url_lt?: String
-  url_lte?: String
-  url_gt?: String
-  url_gte?: String
-  url_contains?: String
-  url_not_contains?: String
-  url_starts_with?: String
-  url_not_starts_with?: String
-  url_ends_with?: String
-  url_not_ends_with?: String
 }
 
 export interface FileCreateInput {
@@ -351,18 +295,151 @@ export interface FileUpdateInput {
   url?: String
 }
 
+export interface FileSubscriptionWhereInput {
+  AND?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
+  OR?: FileSubscriptionWhereInput[] | FileSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: FileWhereInput
+}
+
+export interface FileWhereInput {
+  AND?: FileWhereInput[] | FileWhereInput
+  OR?: FileWhereInput[] | FileWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  name?: String
+  name_not?: String
+  name_in?: String[] | String
+  name_not_in?: String[] | String
+  name_lt?: String
+  name_lte?: String
+  name_gt?: String
+  name_gte?: String
+  name_contains?: String
+  name_not_contains?: String
+  name_starts_with?: String
+  name_not_starts_with?: String
+  name_ends_with?: String
+  name_not_ends_with?: String
+  size?: Int
+  size_not?: Int
+  size_in?: Int[] | Int
+  size_not_in?: Int[] | Int
+  size_lt?: Int
+  size_lte?: Int
+  size_gt?: Int
+  size_gte?: Int
+  secret?: String
+  secret_not?: String
+  secret_in?: String[] | String
+  secret_not_in?: String[] | String
+  secret_lt?: String
+  secret_lte?: String
+  secret_gt?: String
+  secret_gte?: String
+  secret_contains?: String
+  secret_not_contains?: String
+  secret_starts_with?: String
+  secret_not_starts_with?: String
+  secret_ends_with?: String
+  secret_not_ends_with?: String
+  contentType?: String
+  contentType_not?: String
+  contentType_in?: String[] | String
+  contentType_not_in?: String[] | String
+  contentType_lt?: String
+  contentType_lte?: String
+  contentType_gt?: String
+  contentType_gte?: String
+  contentType_contains?: String
+  contentType_not_contains?: String
+  contentType_starts_with?: String
+  contentType_not_starts_with?: String
+  contentType_ends_with?: String
+  contentType_not_ends_with?: String
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
+  updatedAt?: DateTime
+  updatedAt_not?: DateTime
+  updatedAt_in?: DateTime[] | DateTime
+  updatedAt_not_in?: DateTime[] | DateTime
+  updatedAt_lt?: DateTime
+  updatedAt_lte?: DateTime
+  updatedAt_gt?: DateTime
+  updatedAt_gte?: DateTime
+  url?: String
+  url_not?: String
+  url_in?: String[] | String
+  url_not_in?: String[] | String
+  url_lt?: String
+  url_lte?: String
+  url_gt?: String
+  url_gte?: String
+  url_contains?: String
+  url_not_contains?: String
+  url_starts_with?: String
+  url_not_starts_with?: String
+  url_ends_with?: String
+  url_not_ends_with?: String
+}
+
 export interface Node {
   id: ID_Output
 }
 
-export interface FileEdge {
-  node: File
-  cursor: String
+export interface PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor?: String
+  endCursor?: String
+}
+
+export interface BatchPayload {
+  count: Long
+}
+
+export interface FilePreviousValues {
+  id: ID_Output
+  name: String
+  size: Int
+  secret: String
+  contentType: String
+  createdAt: DateTime
+  updatedAt: DateTime
+  url: String
 }
 
 export interface FileConnection {
   pageInfo: PageInfo
-  edges?: Array<FileEdge>
+  edges: FileEdge[]
+}
+
+export interface FileSubscriptionPayload {
+  mutation: MutationType
+  node?: File
+  updatedFields?: String[]
+  previousValues?: FilePreviousValues
 }
 
 export interface File extends Node {
@@ -376,28 +453,22 @@ export interface File extends Node {
   url: String
 }
 
-export interface BatchPayload {
-  count: Long
+export interface FileEdge {
+  node: File
+  cursor: String
 }
 
-export interface PageInfo {
-  hasNextPage: Boolean
-  hasPreviousPage: Boolean
-  startCursor?: String
-  endCursor?: String
-}
-
-export type Long = string
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number
 
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string
+export type Long = string
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
@@ -415,10 +486,11 @@ export type Boolean = boolean
 export interface Schema {
   query: Query
   mutation: Mutation
+  subscription: Subscription
 }
 
 export type Query = {
-  files: (args: { where?: FileWhereInput, orderBy?: FileOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Array<File>>
+  files: (args: { where?: FileWhereInput, orderBy?: FileOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<File[]>
   file: (args: { where: FileWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<File | null>
   filesConnection: (args: { where?: FileWhereInput, orderBy?: FileOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<FileConnection>
   node: (args: { id: ID_Output }, info?: GraphQLResolveInfo | string) => Promise<Node | null>
@@ -434,14 +506,22 @@ export type Mutation = {
   resetData: (args: {}, info?: GraphQLResolveInfo | string) => Promise<Boolean | null>
 }
 
+export type Subscription = {
+  file: (args: { where?: FileSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<FileSubscriptionPayload>>
+}
+
 export class Graphcool extends BaseGraphcool {
   
   constructor({ endpoint, secret, fragmentReplacements, debug }: BaseGraphcoolOptions) {
     super({ typeDefs, endpoint, secret, fragmentReplacements, debug });
   }
-  
+
+  exists = {
+    File: (where: FileWhereInput): Promise<boolean> => super.existsDelegate('query', 'files', { where }, {}, '{ id }')
+  }
+
   query: Query = {
-    files: (args, info): Promise<Array<File>> => super.delegate('query', 'files', args, {}, info),
+    files: (args, info): Promise<File[]> => super.delegate('query', 'files', args, {}, info),
     file: (args, info): Promise<File | null> => super.delegate('query', 'file', args, {}, info),
     filesConnection: (args, info): Promise<FileConnection> => super.delegate('query', 'filesConnection', args, {}, info),
     node: (args, info): Promise<Node | null> => super.delegate('query', 'node', args, {}, info)
@@ -455,5 +535,9 @@ export class Graphcool extends BaseGraphcool {
     updateManyFiles: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyFiles', args, {}, info),
     deleteManyFiles: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyFiles', args, {}, info),
     resetData: (args, info): Promise<Boolean | null> => super.delegate('mutation', 'resetData', args, {}, info)
+  }
+
+  subscription: Subscription = {
+    file: (args, infoOrQuery): Promise<AsyncIterator<FileSubscriptionPayload>> => super.delegateSubscription('file', args, infoOrQuery)
   }
 }

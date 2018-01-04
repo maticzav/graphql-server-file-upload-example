@@ -29,7 +29,7 @@ scalar DateTime
 
 type FileConnection {
   pageInfo: PageInfo!
-  edges: [FileEdge!]
+  edges: [FileEdge]!
 }
 
 input FileCreateInput {
@@ -62,6 +62,34 @@ enum FileOrderByInput {
   updatedAt_DESC
   url_ASC
   url_DESC
+}
+
+type FilePreviousValues {
+  id: ID!
+  name: String!
+  size: Int!
+  secret: String!
+  contentType: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String!
+}
+
+type FileSubscriptionPayload {
+  mutation: MutationType!
+  node: File
+  updatedFields: [String!]
+  previousValues: FilePreviousValues
+}
+
+input FileSubscriptionWhereInput {
+  AND: [FileSubscriptionWhereInput!]
+  OR: [FileSubscriptionWhereInput!]
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: FileWhereInput
 }
 
 input FileUpdateInput {
@@ -189,6 +217,12 @@ type Mutation {
   resetData: Boolean
 }
 
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
 interface Node {
   id: ID!
 }
@@ -205,4 +239,8 @@ type Query {
   file(where: FileWhereUniqueInput!): File
   filesConnection(where: FileWhereInput, orderBy: FileOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): FileConnection!
   node(id: ID!): Node
+}
+
+type Subscription {
+  file(where: FileSubscriptionWhereInput): FileSubscriptionPayload
 }
