@@ -1,9 +1,9 @@
-import { Graphcool } from "./generated/graphcool"
-import { importSchema } from "graphql-import"
 import { GraphQLServer } from "graphql-yoga"
+import { importSchema } from "graphql-import"
 import { S3 } from 'aws-sdk'
+import { Prisma } from "./generated/prisma"
 import { resolvers } from "./resolvers"
-import fileApi from './modules/fileApi'
+import { files } from './files'
 
 // Config --------------------------------------------------------------------
 
@@ -27,20 +27,20 @@ const server = new GraphQLServer({
   resolvers,
   context: req => ({
     ...req,
-    db: new Graphcool({
-      endpoint: process.env.GRAPHCOOL_ENDPOINT,
-      secret: process.env.GRAPHCOOL_SECRET,
+    db: new Prisma({
+      endpoint: process.env.PRISMA_ENDPOINT,
+      secret: process.env.PRISMA_SECRET,
     }),
   }),
 })
 
 // Middleware ----------------------------------------------------------------
 
-server.express.post('/upload', fileApi({
+server.express.post('/upload', files({
   s3: s3client,
-  graphcool: new Graphcool({
-    endpoint: process.env.GRAPHCOOL_ENDPOINT,
-    secret: process.env.GRAPHCOOL_SECRET,
+  graphcool: new Prisma({
+    endpoint: process.env.PRISMA_ENDPOINT,
+    secret: process.env.PRISMA_SECRET,
   }),
 }))
 

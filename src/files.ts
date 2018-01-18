@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid'
 import * as mime from 'mime-types'
 import * as  multiparty from 'multiparty'
 
-export default ({graphcool, s3}) => (req, res) => {
+export const files = ({graphcool, s3}) => (req, res) => {
   let form = new multiparty.Form()
 
   form.on('part', async function(part) {

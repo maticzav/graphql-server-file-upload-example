@@ -5,9 +5,9 @@ projects:
       endpoints:
         default: "${env:SERVER_ENDPOINT}"
   database:
-    schemaPath: "src/generated/database.graphql"
+    schemaPath: "src/generated/database.graphql" # Where to put generated schema
     extensions:
-      graphcool: graphcool.yml
+      prisma: database/prisma.yml # Prisma config file path
       binding:
-        output: src/generated/graphcool.ts
-        generator: graphcool-ts
+        output: src/generated/prisma.ts # Where to put generated files
+        generator: prisma-ts # Which binding generator should be used

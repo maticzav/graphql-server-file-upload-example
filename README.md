@@ -4,10 +4,10 @@ This example illustrates the implementation of File API with GraphQL Server patt
 
 ## Getting Started
 
-### Initializing the Graphcool Database Service
+### Initializing Prisma Database Service
 ```sh
 graphcool deploy # choose local cluster
-# copy API endpoint into the `GRAPHCOOL_ENPOINT` env var in .env
+# copy API endpoint into the `PRISMA_ENPOINT` env var in .env
 ```
 
 To get `GRAPHCOOL_SECRET` visit http://jwtbuilder.jamiekurtz.com and scroll to the bottom where you can hash your secret from `graphcool.yml` and get the hashed output. (`sssh` is used in the example.)
@@ -37,7 +37,7 @@ It's important to use the form parameter `data` as seen in the example below.
 
 ### Uploading workflow
 
-Everytime you upload a file to Graphcool, a new `File` node is created that contains information about that file.
+Everytime you upload a file to Prisma, a new `File` node is created that contains information about that file.
 
 * `id`: the [familiar system field](!alias-eiroozae8u#id-field)
 * `secret`: a unique, unguessable secret that allows access to the file
